@@ -3,6 +3,7 @@ import CardTypeA from './parts/CardTypeA'
 import SearchBar from './parts/SearchBar'
 import CreateRecipes from './CreateRecipes'
 import QuillEditorBox from './parts/QuillEditorBox'
+import Auth from './authentication/Auth'
 function MainContent() {
 
   return (
@@ -10,7 +11,8 @@ function MainContent() {
       {/* <CardTypeA/> */}
       {/* <SearchBar/> */}
       {/* <CreateRecipes/>  */}
-      <QuillEditorBox/>
+      {/* <QuillEditorBox/> */}
+      <Auth/>
     </>
   )
 }
