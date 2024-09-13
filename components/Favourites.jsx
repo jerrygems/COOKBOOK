@@ -1,8 +1,10 @@
 import React from 'react'
-
+import ListTypeA from './parts/ListTypeA'
 function Favourites() {
   return (
-    <div>Favourites</div>
+    <>
+      <ListTypeA/>
+    </>
   )
 }
 

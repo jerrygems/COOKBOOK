@@ -48,7 +48,6 @@ function CreateRecipeForm() {
                         Button
                     </Button>
                 </Box>
-
             </VStack>
         </Flex>
     )

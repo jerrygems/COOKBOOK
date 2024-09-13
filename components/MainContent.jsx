@@ -4,6 +4,8 @@ import SearchBar from './parts/SearchBar'
 import CreateRecipes from './CreateRecipes'
 import QuillEditorBox from './parts/QuillEditorBox'
 import Auth from './authentication/Auth'
+import ListTypeA from './parts/ListTypeA'
+import Favourites from './Favourites'
 function MainContent() {
 
   return (
@@ -12,7 +14,8 @@ function MainContent() {
       {/* <SearchBar/> */}
       {/* <CreateRecipes/>  */}
       {/* <QuillEditorBox/> */}
-      <Auth/>
+      {/* <Auth/> */}
+      <Favourites/>
     </>
   )
 }
