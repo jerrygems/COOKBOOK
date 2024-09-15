@@ -34,3 +34,29 @@
   width:18px;
   height:18px;
 }
+
+.spacezoner{
+  margin:5px;
+}
+
+.ftr {
+  width:70%;
+}
+
+.testA{
+  background: linear-gradient(0,lightgray,#ffffff);
+}
+.listitem{
+  width:100%;
+  border:1px solid rgb(225, 225, 225);
+  transition:0.3s background;
+}
+
+.listitem:hover{
+  background:#fdfdfd;
+  transition:1s background;
+}
+
+.fullwidth{
+  width: 100%;
+}

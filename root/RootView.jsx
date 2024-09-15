@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
 import React from 'react'
-import MainContent from '../components/MainContent'
-import RecipeMenu from '../components/RecipeMenu'
-import Dashboard from '../components/Dashboard'
-import CreateRecipes from '../components/CreateRecipes'
-import Favourites from '../components/Favourites'
-import Auth from '../components/authentication/Auth'
+import MainContent from './components/userview/MainContent'
+import RecipeMenu from './components/RecipeMenu'
+import Dashboard from './components/Dashboard'
+import CreateRecipes from './components/CreateRecipes'
+import Favourites from './components/userview/Favourites'
+import Auth from './components/authentication/Auth'
 const RootView = () => {
   return (
     <Routes>
