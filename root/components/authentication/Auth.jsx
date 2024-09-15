@@ -1,76 +1,53 @@
-import { InputRightElement, Flex, Box, VStack, InputGroup, Input, Heading, Button } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { AtSignIcon, } from '@chakra-ui/icons'
-import { FaUser } from "react-icons/fa";
-import { BiSolidHide } from "react-icons/bi";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  Input,
+  ModalFooter,
+} from '@chakra-ui/react'
+import React from 'react'
 
 
-function Auth() {
 
-  const [isLogin, setLogin] = useState(true)
-  const toggleForm = () => {
-    setLogin(!isLogin)
-  }
+function Auth({ isOpen, onClose, isSignUp }) {
 
 
   return (
     <>
-      <Flex>
-        <VStack>
-          <Heading>
-            {isLogin ? 'Login' : 'Register'} Form
-          </Heading>
-          {isLogin ? (
-            <Box>
-              <InputGroup>
-                <Input />
-                <InputRightElement>
-                  <AtSignIcon />
-                </InputRightElement>
-              </InputGroup>
-              <br/>
-              <InputGroup>
-                <Input />
-                <InputRightElement>
-                  <BiSolidHide />
-                </InputRightElement>
-              </InputGroup>
-            </Box>
-          ) : (
-            <Box>
-              <InputGroup>
-                <Input />
-                <InputRightElement>
-                  <FaUser />
-                </InputRightElement>
-              </InputGroup>
-              <br />
-              <InputGroup>
-                <Input />
-                <InputRightElement>
-                  <AtSignIcon />
-                </InputRightElement>
-              </InputGroup>
-              <br />
-              <InputGroup>
-                <Input />
-                <InputRightElement>
-                  <BiSolidHide />
-                </InputRightElement>
-              </InputGroup>
-              <br />
-              <InputGroup>
-                <Input />
-                <InputRightElement>
-                  <BiSolidHide />
-                </InputRightElement>
-              </InputGroup>
-            </Box>
-          )}
-          <br /><br />
-          <Button>{isLogin ? 'Login' : 'Register'}</Button>
-        </VStack>
-      </Flex>
+
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{isSignUp ? 'Register' : 'Login'}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input placeholder="Email" mb={3} />
+            <Input placeholder="Password" type="password" mb={3} />
+            {
+              isSignUp ?
+                (<Input placeholder="Confirm Password" type="password" />) : (<></>)
+            }
+          </ModalBody>
+          <ModalFooter>
+            {
+              isSignUp ?
+                (<Button colorScheme="blue" mr={3}>
+                  Register
+                </Button>) :
+                (<Button colorScheme="blue" mr={3}>
+                  Login
+                </Button>)
+            }
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
     </>
   )
 

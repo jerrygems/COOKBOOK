@@ -1,5 +1,5 @@
 import './App.css';
-import { ChakraProvider, Flex } from '@chakra-ui/react'
+import { ChakraProvider, Flex, Center } from '@chakra-ui/react'
 import RootView from '../root/RootView';
 import { BrowserRouter } from 'react-router-dom';
 import UserView from '../root/UserView';
@@ -16,7 +16,7 @@ function App() {
       <ChakraProvider>
         <BrowserRouter>
           <Header />
-          <Flex direction={'row'}>
+          <Flex direction={'row'} justifyContent={'center'}>
             {isAdmin ? <SideNavBar /> : <SideNavBar />}
             {isAdmin ? <RootView /> : <UserView />}
           </Flex>

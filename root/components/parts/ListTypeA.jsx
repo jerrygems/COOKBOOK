@@ -10,10 +10,9 @@ function ListTypeA() {
                         <Box p={6}>
                             <Heading size="md" mb={2}></Heading>
                             <Text mb={4}>recipe description</Text>
-                            <Flex justifyContent="space-between" alignItems="center">
+                            <Flex direction={'column'} justifyContent="space-between" alignItems="start">
                                 <Badge colorScheme="green">category of the recipe</Badge>
-                                <br/>
-                                <Text fontWeight="bold">'time required 10' min</Text>
+                                <Text fontWeight="bold">'10' min</Text>
                             </Flex>
                         </Box>
                     </Box>
