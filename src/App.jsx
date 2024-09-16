@@ -11,36 +11,38 @@ import SideNavBar from '../root/components/parts/side-navbar';
 function App() {
   const [isAdmin, setAdmin] = useState(false)
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwt_token');
-    if (!token) {
-      console.log('no token found');
+  useEffect(()=>{
+   try{
+    const token = localStorage.getItem('vulntoken')
+    if(!token){
+      console.log('there is no token')
       return;
     }
-    const checkRole = async () => {
-      try {
-        const response = await fetch(`localhost:4000/user/check`, {
-          method: 'get',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${token}`
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.message === 'admin') {
-            setAdmin(true);
-          } else {
-            console.log('User is not an admin');
-          }
+    const checkRole = async ()=>{
+      const response  = fetch(`REACT_APP_BACKEND_URL`,{
+        method:"GET",
+        headers:{
+          "Authorization":`Brearer ${token}`,
+          "Content-Type":"application/json"
         }
+      })
 
-      } catch (error) {
-        console.error(error);
+      if(response.ok){
+        const data = await response.json()
+        if(data.message.role==="admin"){
+          setAdmin(true)
+        }else{
+          setAdmin(false)
+        }
+      }else{
+        console.log("response not okay")
       }
-    };
-  })
+    }
+    checkRole()
+   }catch(err){
+      console.log(err)
+   } 
+  },[])
 
   return (
     <>

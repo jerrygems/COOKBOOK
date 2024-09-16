@@ -6,24 +6,7 @@ function CardTypeA() {
 
     const handleLike = () => {
         try {
-            // // here will be fetch api stuff 
-            // const response = await fetch("http://localhost:4000/check-user", {
-            //     method: 'get',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': `${token}`
-            //     },
-            //     cache: 'no-store'
-            // });
-
-            // if (response.ok) {
-            //     const data = await response.json();
-            //     if (data.message === 'admin') {
-            //         setIsAdmin(true);
-            //     } else {
-            //         console.log('User is not an admin');
-            //     }
-            // }
+          
         } catch (err) {
             console.log(err)
         }

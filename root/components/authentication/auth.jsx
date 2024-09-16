@@ -20,20 +20,53 @@ function Auth({ isOpen, onClose, isSignUp }) {
   const [confPassword, setConfPassword] = useState('')
 
   const registerForm = async () => {
-    const response = await fetch("http://0.tcp.in.ngrok.io:11225/api/check",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-      }      
-    })
-    if (response.status==200){
-      console.log(response.data)
+    try {
+      if (password !== confPassword || !email) {
+        console.log("validation failed")
+        return;
+      }
+      const response = await fetch(`${REACT_APP_BACKEND_URL}/api/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      })
+      if (response.ok) {
+        const data = await response.json()
+        console.log('registered', data)
+        onClose()
+      } else {
+        console.log('registration failed')
+      }
+    } catch (err) {
+      console.log(err)
     }
-    console.log(response)
   }
 
   const loginForm = async () => {
-
+    try {
+      if (!email || !password) {
+        console.log("both fields are required")
+        return;
+      }
+      const response = await fetch(`${REACT_APP_BACKEND_URL}/api/login`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      })
+      if (response.ok) {
+        const data = await response.json()
+        console.log("logged in ig", data)
+        localStorage.setItem('vulntoken', data.token)
+      } else {
+        console.log("response not okay")
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
   return (
     <>
@@ -44,11 +77,11 @@ function Auth({ isOpen, onClose, isSignUp }) {
           <ModalHeader>{isSignUp ? 'Register' : 'Login'}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input placeholder="email" mb={3} value={email} onChange={setEmail(email)} />
-            <Input placeholder="password" type="password" mb={3} value={password} onChange={setPassword(password)} />
+            <Input placeholder="email" mb={3} value={email} onChange={(evnt) => setEmail(evnt.target.value)} />
+            <Input placeholder="password" type="password" mb={3} value={password} onChange={(e) => setPassword(e.target.value)} />
             {
               isSignUp ?
-                (<Input placeholder="Confirm Password" type="password" value={confPassword} onChange={setConfPassword(confPassword)} />) : (<></>)
+                (<Input placeholder="Confirm Password" type="password" value={confPassword} onChange={(e) => setConfPassword(e.target.value)} />) : (<></>)
             }
           </ModalBody>
           <ModalFooter>
