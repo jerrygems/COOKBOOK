@@ -1,0 +1,84 @@
+import React, { useState } from 'react';
+import { Box, Button, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, Flex, Text, Link, VStack, Icon } from '@chakra-ui/react';
+import { FaHome, FaUser, FaCog, FaEdit, FaDatabase } from 'react-icons/fa';
+import { ChevronRightIcon, SmallAddIcon } from '@chakra-ui/icons';
+import { useDisclosure } from '@chakra-ui/react';
+import { MdAnalytics } from "react-icons/md";
+
+
+const SideNavBar = ({ }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isAuth, setAuth] = useState(true)
+
+
+
+
+    return (
+        <Box>
+            <Button
+                onClick={onOpen}
+                position="fixed"
+                bottom="20px"
+                left="20px"
+                borderRadius="full"
+                colorScheme="teal"
+                size="lg"
+                leftIcon={<ChevronRightIcon />}
+            />
+
+            <Drawer bg={'#1a202c'} isOpen={isOpen} placement="left" onClose={onClose}>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader>
+                        <Text fontSize="2xl" fontWeight="bold" mb={6}>
+                            CookBook
+                        </Text>
+                    </DrawerHeader>
+
+                    <DrawerBody>
+                        <Flex direction="column" height="100%">
+                            <VStack spacing={4} align="start">
+                                {
+                                    isAuth ? (
+                                        <>
+                                            <Link href="#about" display="flex" alignItems="center">
+                                                <Icon as={MdAnalytics} mr={2} />
+                                                DashBoard
+                                            </Link>
+                                            <Link href="#home" display="flex" alignItems="center">
+                                                <Icon as={SmallAddIcon} mr={2} />
+                                                Create Recipe
+                                            </Link>
+                                            <Link href="#recipes" display="flex" alignItems="center">
+                                                <Icon as={FaEdit} mr={2} />
+                                                Edit Recipe
+                                            </Link>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link href="#home" display="flex" alignItems="center">
+                                                <Icon as={FaHome} mr={2} />
+                                                Home
+                                            </Link>
+                                            <Link href="#recipes" display="flex" alignItems="center">
+                                                <Icon as={FaUser} mr={2} />
+                                                Recipes
+                                            </Link>
+                                            <Link href="#about" display="flex" alignItems="center">
+                                                <Icon as={FaCog} mr={2} />
+                                                About
+                                            </Link>
+                                        </>
+                                    )
+                                }
+                            </VStack>
+                        </Flex>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
+        </Box>
+
+    );
+};
+
+export default SideNavBar;

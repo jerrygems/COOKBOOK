@@ -4,17 +4,17 @@ import {
   Stack,
   Heading,
   Flex,
+  Link,
   Text,
   Button,
   useDisclosure
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import Auth from './authentication/Auth';
+import Auth from './authentication/auth';
 
 function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleToggle = () => (isOpen ? onClose() : onOpen());
-
   const [isSignUp,setSignUp] = useState(false)
 
   const handleLoginClick = ()=>{
@@ -39,7 +39,7 @@ function Header() {
       >
         <Flex align="center" mr={5}>
           <Heading as="h1" size="lg" letterSpacing={"tighter"}>
-            CookBook
+            <Link href='/'>CookBook</Link>
           </Heading>
         </Flex>
 
@@ -55,9 +55,9 @@ function Header() {
           flexGrow={1}
           mt={{ base: 4, md: 0 }}
         >
-          <Text>Recipes</Text>
-          <Text>Search</Text>
-          <Text>Favourite</Text>
+          <Text><Link href={'/recipes'}>Recipes</Link></Text>
+          <Text><Link href={'/search'}>Search</Link></Text>
+          <Text><Link href='/favourites' >Favourite</Link></Text>
         </Stack>
 
         <Box

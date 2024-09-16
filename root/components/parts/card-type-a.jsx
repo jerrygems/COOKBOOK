@@ -1,10 +1,36 @@
 import React from 'react'
-import { Card, CardHeader, CardBody, Heading,Stack,StackDivider,Box,Text } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, Heading, Stack, StackDivider, Box, Text, Button } from '@chakra-ui/react'
+import { FaHeart } from 'react-icons/fa'
 
 function CardTypeA() {
+
+    const handleLike = () => {
+        try {
+            // // here will be fetch api stuff 
+            // const response = await fetch("http://localhost:4000/check-user", {
+            //     method: 'get',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `${token}`
+            //     },
+            //     cache: 'no-store'
+            // });
+
+            // if (response.ok) {
+            //     const data = await response.json();
+            //     if (data.message === 'admin') {
+            //         setIsAdmin(true);
+            //     } else {
+            //         console.log('User is not an admin');
+            //     }
+            // }
+        } catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <>
-            <Card>
+            <Card m={4} width={'100%'}>
                 <CardHeader>
                     <Heading size='md'>Recipe name</Heading>
                 </CardHeader>
@@ -34,6 +60,9 @@ function CardTypeA() {
                             <Text pt='2' fontSize='sm'>
                                 See a detailed analysis of all your business clients.
                             </Text>
+                        </Box>
+                        <Box>
+                            <Button onClick={handleLike}><FaHeart m={2} /> Like</Button>
                         </Box>
                     </Stack>
                 </CardBody>

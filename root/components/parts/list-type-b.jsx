@@ -1,6 +1,5 @@
 import React from 'react'
 import { Box,Flex,Image,Text,Badge,Heading, Button } from '@chakra-ui/react'
-import { FaEdit, FaTrash } from 'react-icons/fa'
 
 function ListTypeB() {
     return (
