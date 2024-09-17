@@ -25,7 +25,7 @@ function Auth({ isOpen, onClose, isSignUp }) {
         console.log("validation failed")
         return;
       }
-      const response = await fetch(`${REACT_APP_BACKEND_URL}/api/register`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -50,7 +50,7 @@ function Auth({ isOpen, onClose, isSignUp }) {
         console.log("both fields are required")
         return;
       }
-      const response = await fetch(`${REACT_APP_BACKEND_URL}/api/login`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/login`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
@@ -77,7 +77,7 @@ function Auth({ isOpen, onClose, isSignUp }) {
           <ModalHeader>{isSignUp ? 'Register' : 'Login'}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input placeholder="email" mb={3} value={email} onChange={(evnt) => setEmail(evnt.target.value)} />
+            <Input placeholder="email" type='email' mb={3} value={email} onChange={(evnt) => setEmail(evnt.target.value)} />
             <Input placeholder="password" type="password" mb={3} value={password} onChange={(e) => setPassword(e.target.value)} />
             {
               isSignUp ?

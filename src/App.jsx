@@ -1,12 +1,12 @@
 import './App.css';
 import { ChakraProvider, Flex, Center } from '@chakra-ui/react'
-import RootView from '../root/root-view';
+import RootView from './root/root-view';
 import { BrowserRouter } from 'react-router-dom';
-import UserView from '../root/user-view';
+import UserView from './root/user-view';
 import React, { useEffect, useState } from 'react';
-import Header from '../root/components/header';
-import Footer from '../root/components/footer';
-import SideNavBar from '../root/components/parts/side-navbar';
+import Header from './root/components/header';
+import Footer from './root/components/footer';
+import SideNavBar from './root/components/parts/side-navbar';
 
 function App() {
   const [isAdmin, setAdmin] = useState(false)
@@ -19,7 +19,7 @@ function App() {
       return;
     }
     const checkRole = async ()=>{
-      const response  = fetch(`REACT_APP_BACKEND_URL`,{
+      const response  = fetch(`${process.env.REACT_APP_BACKEND_URL}`,{
         method:"GET",
         headers:{
           "Authorization":`Brearer ${token}`,
