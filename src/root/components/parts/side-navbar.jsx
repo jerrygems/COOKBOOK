@@ -45,7 +45,7 @@ const SideNavBar = ({ }) => {
                                                 <Icon as={MdAnalytics} mr={2} />
                                                 DashBoard
                                             </Link>
-                                            <Link href="#home" display="flex" alignItems="center">
+                                            <Link href="/create-recipe" display="flex" alignItems="center">
                                                 <Icon as={SmallAddIcon} mr={2} />
                                                 Create Recipe
                                             </Link>

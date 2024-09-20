@@ -19,7 +19,7 @@ function App() {
       return;
     }
     const checkRole = async ()=>{
-      const response  = fetch(`${process.env.REACT_APP_BACKEND_URL}`,{
+      const response  = fetch(`${process.env.REACT_APP_BACKEND_URL}/check`,{
         method:"GET",
         headers:{
           "Authorization":`Brearer ${token}`,

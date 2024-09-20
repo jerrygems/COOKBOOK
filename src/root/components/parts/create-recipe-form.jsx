@@ -8,7 +8,7 @@ import { MdEdit } from "react-icons/md"
 
 
 function CreateRecipeForm() {
-
+  const flag = "update"
   const [recipeName, setRecipeName] = useState("")
   const [description, setDescription] = useState("")
   const [image, setImage] = useState(null)
@@ -17,30 +17,97 @@ function CreateRecipeForm() {
   const [ingredients, setIngredients] = useState("")
 
   const handleSubmission = async () => {
-    try {
-      console.log(recipeName, description, image, content, creator, ingredients)
-      if (recipeName && description && content && creator && ingredients) {
-        const token = localStorage.getItem("vulntoken")
-        const response = fetch(`${process.env.REACT_APP_BACKEND_URL}/api/create/recipe`, {
-          method: 'POST',
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ recipeName, description, image, content, creator, ingredients })
-        })
-        if (response.ok) {
-          console.log('created successfull')
-        } else {
-          console.log("failed to create")
+
+    if (flag === "update") {
+      const token = localStorage.getItem("vulntoken")
+      try {
+        if (!token) {
+          console.log("token is neccessary")
         }
-      } else {
-        console.log('provide neccessary info')
+        if (recipeName || description || content || creator || ingredients) {
+          console.log(recipeName,description,image,content,creator,ingredients)
+          const dataToUpdate = new FormData()
+          dataToUpdate.append("recipeName", recipeName)
+          dataToUpdate.append("description", description)
+          if (image) {
+            dataToUpdate.append("image", image);
+          } else {
+            console.log('undefined')
+          }
+          dataToUpdate.append("content", content)
+          dataToUpdate.append("creator", creator)
+          dataToUpdate.append("ingredients", ingredients)
+
+          const updateRequest = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/update-recipe`, {
+            method: "PUT",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              // "Content-Type":"multipart/form-data"
+            },
+            body: JSON.stringify({
+              recipeName:dataToUpdate
+            })
+          })
+          if (updateRequest.ok) {
+            console.log("updated succesfully")
+          } else {
+            console.log("failed while updating")
+          }
+
+
+        }
+      } catch (e) {
+        console.log(e)
       }
-    } catch (err) {
-      console.log(err)
+
+    } else {
+      try {
+        console.log(recipeName, description, image, content, creator, ingredients)
+        if (recipeName || description || content || creator || ingredients) {
+          const token = localStorage.getItem("vulntoken")
+          const dataToSubmit = new FormData()
+          dataToSubmit.append("recipeName", recipeName)
+          dataToSubmit.append("description", description)
+          if (image) {
+            dataToSubmit.append("image", image);
+          } else {
+            console.log('undefined')
+          }
+          dataToSubmit.append("content", content)
+          dataToSubmit.append("creator", creator)
+          dataToSubmit.append("ingredients", ingredients)
+
+          const response = fetch(`${process.env.REACT_APP_BACKEND_URL}/api/create-recipe`, {
+            method: 'POST',
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+            body: dataToSubmit
+          })
+          if (response.ok) {
+            console.log('created successfull')
+            resetForm();
+          } else {
+            console.log("failed to create")
+          }
+        } else {
+          console.log('provide neccessary info')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+
     }
   }
+
+  const resetForm = () => {
+    setRecipeName("");
+    setDescription("");
+    setImage(null);
+    setContent("");
+    setCreator("");
+    setIngredients("");
+  };
 
   // here quill stuff
   const modules = {
@@ -94,8 +161,8 @@ function CreateRecipeForm() {
             <MdEdit />
           </InputRightElement>
         </InputGroup>
-        <InputGroup> 
-          <Input placeholder="Thumbnail Image For Recipe" value={image} accept='.png' type="file" onChange={(e) => setImage(e.target.files[0])} />
+        <InputGroup>
+          <Input placeholder="Thumbnail Image For Recipe" type="file" accept='.png,.jpg,.jpeg' onChange={(e) => setImage(e.target.files[0])} />
           <InputRightElement>
             <BiSolidImageAdd />
           </InputRightElement>
@@ -107,7 +174,7 @@ function CreateRecipeForm() {
             value={content}
             formats={formats}
             modules={modules}
-            onChange={(value)=>setContent(value)}
+            onChange={(value) => setContent(value)}
           />
         </Box>
 

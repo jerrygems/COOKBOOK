@@ -1,39 +1,58 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardBody, Heading, Stack, StackDivider, Box, Text, Button } from '@chakra-ui/react'
 import { FaHeart } from 'react-icons/fa'
 
 function CardTypeA() {
-
-    const handleLike = () => {
-        try {
-          
-        } catch (err) {
-            console.log(err)
+    const [recipe, setRecipe] = useState([])
+    const tempid = "66ed025b1c11e258fbd5da24"
+    useEffect(() => {
+        const showRecipe = async () => {
+            const request = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-recipe?id=${tempid}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            if (request.ok) {
+                const resp = await request.json()
+                console.log(resp.message)
+                setRecipe(resp.message)
+            }else{
+                console.log("request failed")
+            }
         }
-    }
+        showRecipe()
+    }, [])
+    // const handleLike = () => {
+    //     try {
+
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }
     return (
         <>
             <Card m={4} width={'100%'}>
                 <CardHeader>
-                    <Heading size='md'>Recipe name</Heading>
+                    <Heading size='md'>{recipe.recipeName}</Heading>
                 </CardHeader>
 
                 <CardBody>
                     <Stack divider={<StackDivider />} spacing='4'>
                         <Box>
                             <Heading size='xs' textTransform='uppercase'>
-                                Description of the Recipe
+                                summary
                             </Heading>
                             <Text pt='2' fontSize='sm'>
-                                View a summary of all your clients over the last month.
+                                {recipe.description}
                             </Text>
                         </Box>
                         <Box>
                             <Heading size='xs' textTransform='uppercase'>
-                                Overview
+                                ingredients
                             </Heading>
                             <Text pt='2' fontSize='sm'>
-                                Check out the overview of your clients.
+                                {recipe.ingredients}
                             </Text>
                         </Box>
                         <Box>
@@ -41,11 +60,11 @@ function CardTypeA() {
                                 Analysis
                             </Heading>
                             <Text pt='2' fontSize='sm'>
-                                See a detailed analysis of all your business clients.
+                                here you needa show the number of users that have added this in fav list
                             </Text>
                         </Box>
                         <Box>
-                            <Button onClick={handleLike}><FaHeart m={2} /> Like</Button>
+                            <Button ><FaHeart m={2} /> Like</Button> {/*onClick={handleLike}*/}
                         </Box>
                     </Stack>
                 </CardBody>
