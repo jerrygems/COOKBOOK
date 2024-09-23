@@ -10,7 +10,9 @@ function RecipeMenu() {
   useEffect(() => {
     const showRecipe = async () => {
       try {
-        const request = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-all-recipes`,)
+        const request = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-all-recipes`,{
+          method:'GET',
+        })
         if (request.ok) {
           const resp = await request.json()
           setRecipes(resp.message)
@@ -38,7 +40,7 @@ function RecipeMenu() {
           {
             Array.isArray(recipes) && recipes.map((recipe, index) => {
               return (
-                  <ListTypeA key={index} id={recipe._id} image={recipe.image} name={recipe.recipeName} description={recipe.description} content={recipe.content} creator={recipe.creator} ingredients={recipe.ingredients} timeDate={recipe.timeDate} />
+                  <ListTypeA key={index} recipeName={recipe.recipeName} id={recipe._id} image={recipe.image} name={recipe.recipeName} description={recipe.description} content={recipe.content} creator={recipe.creator} ingredients={recipe.ingredients} timeDate={recipe.timeDate} />
               )
             })
           }

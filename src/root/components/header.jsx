@@ -11,8 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Auth from './authentication/auth';
+import { useNavigate } from 'react-router-dom';
+
 
 function Header() {
+  const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleToggle = () => (isOpen ? onClose() : onOpen())
   const [isSignUp, setSignUp] = useState(false)
@@ -20,7 +23,7 @@ function Header() {
 
   useEffect(() => {
     const token = localStorage.getItem('vulntoken');
-    setIsLoggedIn(!!token)
+    setIsLoggedIn(token)
   }, [])
 
   const handleLoginClick = () => {
@@ -48,8 +51,8 @@ function Header() {
         color="white"
       >
         <Flex align="center" mr={5}>
-          <Heading as="h1" size="lg" letterSpacing={"tighter"}>
-            <Link href='/'>CookBook</Link>
+          <Heading onClick={() => { navigate('/') }} as="h1" size="lg" letterSpacing={"tighter"}>
+            CookBook
           </Heading>
         </Flex>
 
@@ -65,9 +68,9 @@ function Header() {
           flexGrow={1}
           mt={{ base: 4, md: 0 }}
         >
-          <Text><Link href={'/recipes'}>Recipes</Link></Text>
-          <Text><Link href={'/search'}>Search</Link></Text>
-          <Text><Link href='/favourites' >Favourite</Link></Text>
+          <Text onClick={() => { navigate('/recipes') }}>Recipes</Text>
+          <Text onClick={() => { navigate('/search') }}>Search</Text>
+          <Text onClick={() => { navigate('/favourites') }}>Favourite</Text>
         </Stack>
 
         <Box

@@ -39,32 +39,28 @@ const SideNavBar = ({ }) => {
                                 {
                                     isAdmin ? (
                                         <>
-                                            <Link href="/create" display="flex" alignItems="center">
-                                                <Icon as={MdAnalytics} mr={2} />
-                                                DashBoard
+                                            <Link href="/" display="flex" alignItems="center">
+                                                <Icon as={FaHome} mr={2} />
+                                                Home
                                             </Link>
-                                            <Link href="/create-recipe" display="flex" alignItems="center">
-                                                <Icon as={SmallAddIcon} mr={2} />
-                                                Create Recipe
+                                            <Link href="/recipes" display="flex" alignItems="center">
+                                                <Icon as={FaUser} mr={2} />
+                                                Recipes
                                             </Link>
-                                            <Link href="#recipes" display="flex" alignItems="center">
-                                                <Icon as={FaEdit} mr={2} />
-                                                Edit Recipe
+                                            <Link href="/tmp" display="flex" alignItems="center">
+                                                <Icon as={FaCog} mr={2} />
+                                                About
                                             </Link>
                                         </>
                                     ) : (
                                         <>
-                                            <Link href="#home" display="flex" alignItems="center">
-                                                <Icon as={FaHome} mr={2} />
-                                                Home
+                                            <Link href="/insights" display="flex" alignItems="center">
+                                                <Icon as={MdAnalytics} mr={2} />
+                                                DashBoard
                                             </Link>
-                                            <Link href="#recipes" display="flex" alignItems="center">
-                                                <Icon as={FaUser} mr={2} />
-                                                Recipes
-                                            </Link>
-                                            <Link href="#about" display="flex" alignItems="center">
-                                                <Icon as={FaCog} mr={2} />
-                                                About
+                                            <Link href="/recipes" display="flex" alignItems="center">
+                                                <Icon as={SmallAddIcon} mr={2} />
+                                                Create Recipe
                                             </Link>
                                         </>
                                     )

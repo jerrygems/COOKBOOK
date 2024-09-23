@@ -1,23 +1,46 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, Box, Flex, Heading, Text, Badge, Button } from '@chakra-ui/react'
-import { FaEdit, FaTrash } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
-function ListTypeC() {
+function ListTypeC({ id }) {
+    console.log(id, "here it is")
+    const navigate = useNavigate()
+    const [result, setResult] = useState({})
+
+    const getData = async () => {
+        const req = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-recipe/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+
+        })
+        if (req.ok) {
+            const resp = await req.json()
+            setResult(resp.message)
+        }
+        console.log("unable to get the recipe")
+    }
+
+    useEffect(() => {
+        getData()
+
+    }, [])
+
+    const handleClick = () => {
+        navigate(`/recipe/${id}`)
+    }
     return (
-        <Box maxW="md" m={4} borderWidth={1} borderRadius={8} overflow="hidden">
-            <Flex>
-                <Image width={100} m={2} objectFit={'cover'} src={'https://github.com/AngelJumbo/gruvbox-wallpapers/blob/main/wallpapers/anime/wall.jpg?raw=true'} alt={'alt text here'} />
+        <Box maxW="md" m={4} onClick={handleClick} borderWidth={1} borderRadius={8} overflow="hidden">
+            <Flex height={'100%'}>
+                <Image width={100} height={'80%'} m={2} objectFit={'cover'} src={'https://github.com/AngelJumbo/gruvbox-wallpapers/blob/main/wallpapers/anime/wall.jpg?raw=true'} alt={'alt text here'} />
                 <Box m={2}>
-                    <Heading size="sm" mb={2}> title here</Heading>
-                    <Text size={'xs'} mb={4}>recipe description</Text>
+                    <Heading size="sm" mb={2}> {result.recipeName} </Heading>
+                    <Text size={'xs'} mb={4}>{result.description}...</Text>
                     <Flex direction={'column'} justifyContent="space-between" >
-                        <Badge colorScheme="green">category of the recipe</Badge>
+                        <Badge colorScheme="green">{result.ingredients}</Badge>
                         <Text color={'gray'} fontSize={'xs'}>'10' min</Text>
                     </Flex>
-                    {/* <Flex direction={'row-reverse'}>
-                            <Button size={'sm'} m={1}><FaEdit /> Edit</Button>
-                            <Button size={'sm'} bg={'red.700'} m={1}><FaTrash /> Drop</Button>
-                        </Flex> */}
                 </Box>
             </Flex>
         </Box>

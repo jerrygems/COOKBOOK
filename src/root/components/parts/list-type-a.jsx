@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import { AiFillLike } from "react-icons/ai";
 
 
-function ListTypeA({ id, image, title, description, creator, ingredients, timeDate }) {
+function ListTypeA({ id, image, recipeName, title, description, creator, ingredients, timeDate }) {
     const { isAdmin } = useIsAdmin()
-    const [isFavorited, setIsFavorited] = useState(false);
+    const [isFav, setIsFav] = useState(false);
     const navigate = useNavigate()
 
 
@@ -41,24 +41,57 @@ function ListTypeA({ id, image, title, description, creator, ingredients, timeDa
     }
     useEffect(() => {
         const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-        setIsFavorited(favoriteRecipes.includes(id));
+        setIsFav(favoriteRecipes.includes(id));
     }, [id]);
-
     const toggleFav = async () => {
         try {
             const token = localStorage.getItem('vulntoken')
-            const method = isFavorited ? 'DELETE' : 'POST'
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/add-fav`, {
-                method: method,
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/exists?id=${id}`, {
+                method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ recipeId: id })
-            });
+                }
+            })
 
             if (response.ok) {
-                setIsFavorited(!isFavorited);
+                console.log(response)
+                const resp = await response.json()
+                if (resp.message === true) {
+                    try {
+                        const deleteRequest = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/remove-fav?recipe=${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                "Authorization": `Bearer ${token}`
+                            }
+                        })
+                        if (deleteRequest.ok) {
+                            console.log("removed i guess")
+                            setIsFav(false)
+                        } else {
+                            console.log("didn't got removed ")
+                        }
+                    } catch (err) {
+                        console.log(err)
+                    }
+                } else {
+                    try {
+                        const addfav = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/add-fav?recipe=${id}`, {
+                            method: 'PUT',
+                            headers: {
+                                "Authorization": `Bearer ${token}`
+                            }
+                        })
+                        if (addfav.ok) {
+                            const resp = await addfav.json()
+                            setIsFav(true)
+                            console.log("added ", resp)
+                        }
+                        console.log("failed to add")
+                    } catch (err) {
+                        console.log(err)
+                    }
+                }
             } else {
                 console.error('failed to update')
             }
@@ -66,16 +99,38 @@ function ListTypeA({ id, image, title, description, creator, ingredients, timeDa
             console.error('err updating', error)
         }
     };
+    const btns = async () => {
+        const token = localStorage.getItem('vulntoken')
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/exists?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        if (response.ok) {
+            const resp = response.json()
+            resp.message === true ? setIsFav(true) : setIsFav(false)
+        }
+    }
+    useEffect(() => {
+        btns()
+    }, [])
+
     return (
         <>
-            <Box maxW="xs" m={4} borderWidth={1} borderRadius={8} overflow="hidden">
-                <Image height={200} onClick={handleClicker} src={`${process.env.REACT_APP_BACKEND_URL}${image}`} alt={'alt text here'} />
-                <Flex direction={'row-reverse'} mt={5} mr={5} fontSize={20} >
-                    <AiFillLike onClick={toggleFav} />
+            <Box maxW="xs" minW='xs' m={4} borderWidth={1} borderRadius={8} overflow="hidden" justifyContent={'space-around'}>
+                <Image height={200} width={'100%'} onClick={handleClicker} src={`${process.env.REACT_APP_BACKEND_URL}${image}`} alt={'alt text here'} />
+                <Flex direction={'row'} mt={5} mr={5} fontSize={20} >
+                    <Box width={"90%"}>
+                        <Heading ml={5} size='md'>
+                            {recipeName.substr(0, 30)}...
+                        </Heading>
+                    </Box>
+                    <AiFillLike color={isFav ? 'red' : 'black'} width={"10%"} onClick={toggleFav} />
                 </Flex>
                 <Box p={6}>
-                    <Heading onClick={handleClicker} size="md" mb={2}>{title}</Heading>
-                    <Text onClick={handleClicker} mb={4}>{description}</Text>
+                    <Text onClick={handleClicker} mb={4}>{description.substr(0, 100)}...</Text>
                     <Flex onClick={handleClicker} direction={'column'} justifyContent="space-between" alignItems="start">
                         <Badge colorScheme="green">{ingredients}</Badge>
                         <Text fontWeight="bold">{timeDate}</Text>
@@ -83,7 +138,7 @@ function ListTypeA({ id, image, title, description, creator, ingredients, timeDa
                     </Flex>
                     {
                         isAdmin && (
-                            <Flex direction={'row-reverse'}>
+                            <Flex direction={'row-reverse'} mt={2} justifyContent={'space-around'}>
                                 <Button m={1} onClick={handleEdit}><FaEdit /> Edit</Button>
                                 <Button bg={'red.700'} m={1} onClick={handleTrash}><FaTrash /> Drop</Button>
                             </Flex>

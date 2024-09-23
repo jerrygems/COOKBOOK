@@ -3,32 +3,41 @@ import { Box, Heading, Flex } from '@chakra-ui/react'
 import ListTypeC from '../parts/list-type-c'
 function Favourites() {
   const [results, setResults] = useState([])
-  useEffect(() => {
-    const getallfavs = async (req, resp) => {
-      const token = localStorage.getItem("vulntoken")
-      const request = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-favs`, {
-        method: "GET",
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      })
-      if(request.ok){
-        const res = request.json()
-        console.log(res)
-        setResults(res)
+
+  const getAllFavs = async () => {
+    const token = localStorage.getItem("vulntoken")
+
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-favs`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+
       }
-      console.log("failed fetching data")
-    }
-    getallfavs()
+    })
+      .then(response => response.json())
+      .then(data => {
+        setResults(data.message)
+      })
+      .catch(error => console.error('Error:', error));
+  }
+  useEffect(() => {
+    getAllFavs()
   }, [])
   return (
     <>
       <Box gap={4}>
-        <Heading size={'lg'} m={4} >Favourites</Heading>
+        <Heading size={'lg'} m={4} >Favourites </Heading>
         <hr />
         <Flex wrap={'wrap'} m={4}>
-          <ListTypeC />
+          {
+
+            Array.isArray(results) && results.map((result, index) => {
+              return (
+                <ListTypeC key={index} id={result} />
+              )
+            })
+          }
         </Flex>
       </Box>
     </>

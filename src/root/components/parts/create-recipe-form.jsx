@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Box, Center, VStack, Input, InputGroup, InputRightElement, Heading } from '@chakra-ui/react'
 import { Search2Icon, SmallAddIcon } from '@chakra-ui/icons'
 import { BiSolidImageAdd } from "react-icons/bi";
@@ -6,7 +6,7 @@ import QuillEditor from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { MdEdit } from "react-icons/md"
 
-function CreateRecipeForm({recipeId}) {
+function CreateRecipeForm({ recipeId }) {
   const flag = recipeId ? "update" : "create"
   const [recipeName, setRecipeName] = useState("")
   const [description, setDescription] = useState("")
@@ -56,6 +56,9 @@ function CreateRecipeForm({recipeId}) {
 
 
   }
+  useEffect(() => {
+    handleSubmission()
+  }, [])
 
 
   const resetForm = () => {
@@ -103,7 +106,7 @@ function CreateRecipeForm({recipeId}) {
       width={{ base: "90%", sm: "600px" }}
     >
       <Center>
-        <Heading size="lg">{flag==="update"?"Update Recipe":"Create Recipes"}</Heading>
+        <Heading size="lg">{flag === "update" ? "Update Recipe" : "Create Recipes"}</Heading>
       </Center>
       <hr />
       <VStack spacing={4} width="100%">

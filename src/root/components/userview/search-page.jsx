@@ -57,7 +57,7 @@ function SearchPage() {
             {
               Array.isArray(results) && results.map((result, index) => {
                 return (
-                  <ListTypeA key={index} id={result._id} image={result.image} name={result.recipeName} description={result.description} content={result.content} creator={result.creator} ingredients={result.ingredients} timeDate={result.timeDate} />
+                  <ListTypeA key={index} id={result._id} recipeName={result.recipeName} image={result.image} name={result.recipeName} description={result.description} content={result.content} creator={result.creator} ingredients={result.ingredients} timeDate={result.timeDate} />
                 )
               })
             }
