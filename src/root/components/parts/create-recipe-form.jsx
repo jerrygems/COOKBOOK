@@ -6,9 +6,8 @@ import QuillEditor from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { MdEdit } from "react-icons/md"
 
-
-function CreateRecipeForm() {
-  const flag = "update"
+function CreateRecipeForm({recipeId}) {
+  const flag = recipeId ? "update" : "create"
   const [recipeName, setRecipeName] = useState("")
   const [description, setDescription] = useState("")
   const [image, setImage] = useState(null)
@@ -17,88 +16,47 @@ function CreateRecipeForm() {
   const [ingredients, setIngredients] = useState("")
 
   const handleSubmission = async () => {
-
-    if (flag === "update") {
-      const token = localStorage.getItem("vulntoken")
-      try {
-        if (!token) {
-          console.log("token is neccessary")
-        }
-        if (recipeName || description || content || creator || ingredients) {
-          console.log(recipeName,description,image,content,creator,ingredients)
-          const dataToUpdate = new FormData()
-          dataToUpdate.append("recipeName", recipeName)
-          dataToUpdate.append("description", description)
-          if (image) {
-            dataToUpdate.append("image", image);
-          } else {
-            console.log('undefined')
-          }
-          dataToUpdate.append("content", content)
-          dataToUpdate.append("creator", creator)
-          dataToUpdate.append("ingredients", ingredients)
-
-          const updateRequest = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/update-recipe`, {
-            method: "PUT",
-            headers: {
-              "Authorization": `Bearer ${token}`,
-              // "Content-Type":"multipart/form-data"
-            },
-            body: JSON.stringify({
-              recipeName:dataToUpdate
-            })
-          })
-          if (updateRequest.ok) {
-            console.log("updated succesfully")
-          } else {
-            console.log("failed while updating")
-          }
-
-
-        }
-      } catch (e) {
-        console.log(e)
+    const token = localStorage.getItem("vulntoken")
+    try {
+      if (!token) {
+        console.log("token is neccessary")
       }
-
-    } else {
-      try {
+      if (recipeName || description || content || creator || ingredients) {
         console.log(recipeName, description, image, content, creator, ingredients)
-        if (recipeName || description || content || creator || ingredients) {
-          const token = localStorage.getItem("vulntoken")
-          const dataToSubmit = new FormData()
-          dataToSubmit.append("recipeName", recipeName)
-          dataToSubmit.append("description", description)
-          if (image) {
-            dataToSubmit.append("image", image);
-          } else {
-            console.log('undefined')
-          }
-          dataToSubmit.append("content", content)
-          dataToSubmit.append("creator", creator)
-          dataToSubmit.append("ingredients", ingredients)
-
-          const response = fetch(`${process.env.REACT_APP_BACKEND_URL}/api/create-recipe`, {
-            method: 'POST',
-            headers: {
-              "Authorization": `Bearer ${token}`,
-            },
-            body: dataToSubmit
-          })
-          if (response.ok) {
-            console.log('created successfull')
-            resetForm();
-          } else {
-            console.log("failed to create")
-          }
+        const dataToUpdate = new FormData()
+        dataToUpdate.append("recipeName", recipeName)
+        dataToUpdate.append("description", description)
+        if (image) {
+          dataToUpdate.append("image", image);
         } else {
-          console.log('provide neccessary info')
+          console.log('undefined')
         }
-      } catch (err) {
-        console.log(err)
+        dataToUpdate.append("content", content)
+        dataToUpdate.append("creator", creator)
+        dataToUpdate.append("ingredients", ingredients)
+        const url = flag === "update" ? `${process.env.REACT_APP_BACKEND_URL}/api/update-recipe?recipeId=${recipeId}` : `${process.env.REACT_APP_BACKEND_URL}/api/create-recipe`
+        const request = await fetch(url, {
+          method: `${flag === "update" ? "PUT" : "POST"}`,
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            // "Content-Type":"multipart/form-data"
+          },
+          body: dataToUpdate
+        })
+        if (request.ok) {
+          console.log("updated succesfully")
+          resetForm()
+        } else {
+          console.log("failed while updating")
+        }
       }
-
+    } catch (e) {
+      console.log(e)
     }
+
+
   }
+
 
   const resetForm = () => {
     setRecipeName("");
@@ -145,7 +103,7 @@ function CreateRecipeForm() {
       width={{ base: "90%", sm: "600px" }}
     >
       <Center>
-        <Heading size="lg">Create Recipes</Heading>
+        <Heading size="lg">{flag==="update"?"Update Recipe":"Create Recipes"}</Heading>
       </Center>
       <hr />
       <VStack spacing={4} width="100%">
@@ -194,7 +152,7 @@ function CreateRecipeForm() {
       </VStack>
       <Box width="100%">
         <Button colorScheme="teal" size="md" width="full" onClick={handleSubmission}>
-          Create Recipe
+          {flag === 'update' ? "update recipe" : "create recipe"}
         </Button>
       </Box>
     </VStack>

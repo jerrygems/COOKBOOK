@@ -4,16 +4,15 @@ import CreateRecipes from '../create-recipe'
 import QuillEditorBox from '../parts/quill-editor-box'
 import Auth from '../authentication/auth'
 import ListTypeA from '../parts/list-type-a'
-import Favourites from './favourite'
+import Favourites from '../userview/favourite'
 import Insights from '../insights'
 import Header from '../header'
 import Footer from '../footer'
 import RecipeMenu from '../recipe-menu'
-import { Flex, Heading, useStatStyles, Link } from '@chakra-ui/react'
+import { Flex, Heading, Link } from '@chakra-ui/react'
 import ListTypeB from '../parts/list-type-b'
-import CreateRecipePage from './create-recipe-page'
-
-function UserHomeScreen() {
+import CreateRecipePage from '../userview/create-recipe-page'
+function RootUserHomeScreen() {
 
     const [recipes, setRecipes] = useState([])
 
@@ -51,7 +50,7 @@ function UserHomeScreen() {
                     {
                         Array.isArray(recipes) && recipes.map((recipe, index) => {
                             return (
-                                <ListTypeA key={recipe._id} title={recipe.recipeName} description={recipe.description} creator={recipe.creator} ingredients={recipe.ingredients} timeDate={recipe.postedAt} />
+                                <ListTypeA key={recipe._id} id={recipe._id} title={recipe.recipeName} description={recipe.description} creator={recipe.creator} ingredients={recipe.ingredients} timeDate={recipe.postedAt} />
                             )
                         })
                     }
@@ -60,10 +59,10 @@ function UserHomeScreen() {
                 <Heading m={6}>By Date :-)</Heading>
                 <hr />
                 <Flex direction={'row'} wrap={'wrap'}>
-                    {/* <ListTypeA/>
                     <ListTypeA/>
                     <ListTypeA/>
-                    <ListTypeA/> */}
+                    <ListTypeA/>
+                    <ListTypeA/>
                 </Flex>
                 <hr />
             </Flex>
@@ -80,4 +79,4 @@ function UserHomeScreen() {
     )
 }
 
-export default UserHomeScreen
+export default RootUserHomeScreen

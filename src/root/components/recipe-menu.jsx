@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Flex, Link, Heading, Button } from '@chakra-ui/react'
 import ListTypeA from './parts/list-type-a'
 import { MdAdd } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 function RecipeMenu() {
   const [recipes, setRecipes] = useState([])
+  const navigate = useNavigate()
   useEffect(() => {
     const showRecipe = async () => {
       try {
@@ -21,28 +23,28 @@ function RecipeMenu() {
     }
     showRecipe()
   }, [])
+
+  const handleNavigation = ()=>{
+    navigate('/create-recipe')
+  }
   return (
     <>
-      <Flex direction={'column'}>
-        <Flex flex={'row'} wrap={'wrap'} justifyContent={'space-between'}>
+      <Flex direction={'column'} justifyContent={'center'} width={"100%"}>
+        <Flex flex={'row'} wrap={'wrap'} justifyContent={'space-between'} >
           <Heading m={2}>Recipe Menu</Heading>
-          <Button bg={'lime.700'} m={2} rightIcon={<MdAdd />} >Create Recipe</Button>
+          <Button bg={'lime.700'} m={2} rightIcon={<MdAdd />} onClick={handleNavigation} >Create Recipe</Button>
         </Flex>
-        <Flex direction={'row'} wrap={'wrap'} >
-          <Link href={'/'}>
-            {
-              Array.isArray(recipes) && recipes.map((recipe, index) => {
-                return (
-                  <Link href={`${process.env.REACT_APP_URL}/recipe?id=${recipe._id}`}>
-                    <ListTypeA key={index} name={recipe.recipeName} description={recipe.description} content={recipe.content} creator={recipe.creator} ingredients={recipe.ingredients} timeDate={recipe.timeDate} />
-                  </Link>
-          )
-              })
-            }
-        </Link>
+        <Flex direction={'row'} wrap={'wrap'} justifyContent={'center'}>
+          {
+            Array.isArray(recipes) && recipes.map((recipe, index) => {
+              return (
+                  <ListTypeA key={index} id={recipe._id} image={recipe.image} name={recipe.recipeName} description={recipe.description} content={recipe.content} creator={recipe.creator} ingredients={recipe.ingredients} timeDate={recipe.timeDate} />
+              )
+            })
+          }
 
-      </Flex>
-    </Flex >
+        </Flex>
+      </Flex >
     </>
   )
 }

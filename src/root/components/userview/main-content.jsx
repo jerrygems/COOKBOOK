@@ -1,5 +1,4 @@
 import React from 'react'
-import SearchBar from '../parts/search-bar'
 import CreateRecipes from '../create-recipe'
 import QuillEditorBox from '../parts/quill-editor-box'
 import ListTypeA from '../parts/list-type-a'

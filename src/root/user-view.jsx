@@ -5,13 +5,13 @@ import SearchPage from './components/userview/search-page'
 import UserHomeScreen from './components/userview/user-home-screen'
 import CreateRecipePage from './components/userview/create-recipe-page'
 import RecipeMenu from './components/recipe-menu'
-import MainContent from './components/userview/main-content'
+import ViewRecipe from './components/userview/view-recipe'
 
 function UserView() {
   return (
     <Routes>
-      <Route path='/' element={<UserHomeScreen/>} />
-      <Route path={"/recipe"} element={<MainContent />} />
+      <Route path='/' element={<RecipeMenu/>} />
+      <Route path={"/recipe/:recipeId"} element={<ViewRecipe />} />
       <Route path='/recipes' element={<RecipeMenu/>} />
       <Route path='/search' element={<SearchPage/>} />
       <Route path='/favourites' element={<Favourites/>} />

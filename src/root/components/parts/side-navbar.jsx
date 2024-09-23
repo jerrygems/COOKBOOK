@@ -4,13 +4,11 @@ import { FaHome, FaUser, FaCog, FaEdit, FaDatabase } from 'react-icons/fa';
 import { ChevronRightIcon, SmallAddIcon } from '@chakra-ui/icons';
 import { useDisclosure } from '@chakra-ui/react';
 import { MdAnalytics } from "react-icons/md";
-
+import { useIsAdmin } from '../authentication/is-admin-context';
 
 const SideNavBar = ({ }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [isAuth, setAuth] = useState(true)
-
-
+    const isAdmin = useIsAdmin()
 
 
     return (
@@ -39,9 +37,9 @@ const SideNavBar = ({ }) => {
                         <Flex direction="column" height="100%">
                             <VStack spacing={4} align="start">
                                 {
-                                    isAuth ? (
+                                    isAdmin ? (
                                         <>
-                                            <Link href="#about" display="flex" alignItems="center">
+                                            <Link href="/create" display="flex" alignItems="center">
                                                 <Icon as={MdAnalytics} mr={2} />
                                                 DashBoard
                                             </Link>
