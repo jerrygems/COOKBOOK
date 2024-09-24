@@ -16,8 +16,7 @@ function AppContent() {
     <>
       <Header />
       <Flex direction={'row'} justifyContent={'center'}>
-        {/* {isAdmin ? <SideNavBar /> : <SideNavBar />} */}
-        <SideNavBar />
+        {/* <SideNavBar /> */}
         {isAdmin ? <RootView /> : <UserView />}
       </Flex>
       <Footer />
