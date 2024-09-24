@@ -1,30 +1,25 @@
-import { Flex, Heading, Box, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { Flex, Heading, Text, Box, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { SearchIcon } from '@chakra-ui/icons'
-import ListTypeC from '../parts/list-type-c'
-import ListTypeA from '../parts/list-type-a';
+import SearchResultsMapping from './search-results-mapping';
 
 function SearchPage() {
 
   const [searchIt, setSearchIt] = useState('');
   const [results, setResults] = useState([]);
+  const [gotResults, setGotResults] = useState(false)
 
   useEffect(() => {
+    console.log("here")
     const searchingFun = async () => {
       if (searchIt.length > 0) { // Only search if there's input
-        const token = localStorage.getItem('vulntoken');
-        if (token) {
-          const request = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/search-query?q=${searchIt}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          })
-          if (request.ok) {
-            const resp = await request.json()
-            console.log('Got some results:', resp)
-            setResults(resp.message || [])
-          }
+        const request = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/search-query?q=${searchIt}`, {
+          method: 'GET'
+        })
+        if (request.ok) {
+          const resp = await request.json()
+          console.log('Got some results:', resp)
+          setResults(resp.message || [])
         }
       } else {
         setResults([])
@@ -41,7 +36,7 @@ function SearchPage() {
   return (
     <>
       <Flex direction={'column'}>
-        <Heading textAlign={'start'} m={5}>Search here for the recipes</Heading>
+        <Heading textAlign={'center'} m={5}>Search here for the recipes</Heading>
         <Box direction={'column'}>
           {/* searchbar here */}
           <Flex justifyContent={'center'}>
@@ -54,13 +49,10 @@ function SearchPage() {
           </Flex>
 
           <Flex direction={'row'} wrap={'wrap'} width={'100%'} justifyContent={'center'}>
-            {
-              Array.isArray(results) && results.map((result, index) => {
-                return (
-                  <ListTypeA key={index} id={result._id} recipeName={result.recipeName} image={result.image} name={result.recipeName} description={result.description} content={result.content} creator={result.creator} ingredients={result.ingredients} timeDate={result.timeDate} />
-                )
-              })
-            }
+            <SearchResultsMapping
+              searchit={searchIt}
+              results={results}
+            />
           </Flex>
         </Box>
       </Flex>

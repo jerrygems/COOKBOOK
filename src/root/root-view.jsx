@@ -5,10 +5,12 @@ import CreateRecipePage from './components/userview/create-recipe-page'
 import Favourites from './components/userview/favourite'
 import ViewRecipe from './components/userview/view-recipe'
 import SearchPage from './components/userview/search-page'
+import CreatedBy from './components/userview/created-by'
 const RootView = () => {
   return (
     <Routes>
       <Route path='/' element={<RecipeMenu />} />
+      <Route path='/created' element={<CreatedBy/> } />
       <Route path={"/recipes"} element={<RecipeMenu />} />
       <Route path='/insights' element={<></>} />
       <Route path={"/recipe/:recipeId"} element={<ViewRecipe />} />

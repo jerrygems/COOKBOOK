@@ -14,7 +14,8 @@ function CreateRecipeForm({ recipeId }) {
   const [content, setContent] = useState("")
   const [creator, setCreator] = useState("")
   const [ingredients, setIngredients] = useState("")
-
+  const [recipe, setRecipe] = useState({})
+  const [fetched, setFetched] = useState(false)
   const handleSubmission = async () => {
     const token = localStorage.getItem("vulntoken")
     try {
@@ -39,11 +40,11 @@ function CreateRecipeForm({ recipeId }) {
           method: `${flag === "update" ? "PUT" : "POST"}`,
           headers: {
             "Authorization": `Bearer ${token}`,
-            // "Content-Type":"multipart/form-data"
           },
           body: dataToUpdate
         })
         if (request.ok) {
+          const resp = request.json()
           console.log("updated succesfully")
           resetForm()
         } else {
@@ -58,6 +59,31 @@ function CreateRecipeForm({ recipeId }) {
   }
   useEffect(() => {
     handleSubmission()
+  }, [])
+
+
+  const getRecipe = async () => {
+    const request = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-recipe/${recipeId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    if (request.ok) {
+      const resp = await request.json()
+      console.log(resp.message)
+      setRecipeName(resp.message.recipeName)
+      setDescription(resp.message.description)
+      setContent(resp.message.content)
+      setCreator(resp.message.creator)
+      setIngredients(resp.message.ingredients)
+
+    } else {
+      console.log("request failed")
+    }
+  }
+  useEffect(() => {
+    getRecipe()
   }, [])
 
 
@@ -113,7 +139,7 @@ function CreateRecipeForm({ recipeId }) {
         <InputGroup>
           <Input placeholder="Recipe Name" type='text' value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
           <InputRightElement>
-            <SmallAddIcon />
+            <MdEdit />
           </InputRightElement>
         </InputGroup>
         <InputGroup>
@@ -142,14 +168,14 @@ function CreateRecipeForm({ recipeId }) {
         <InputGroup>
           <Input placeholder="Creator Name" value={creator} onChange={(e) => setCreator(e.target.value)} />
           <InputRightElement>
-            <SmallAddIcon />
+            <MdEdit />
           </InputRightElement>
         </InputGroup>
 
         <InputGroup>
           <Input placeholder="Ingredients" value={ingredients} onChange={(e) => setIngredients(e.target.value)} />
           <InputRightElement>
-            <Search2Icon />
+            <MdEdit />
           </InputRightElement>
         </InputGroup>
       </VStack>

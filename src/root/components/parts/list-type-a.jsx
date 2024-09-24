@@ -7,7 +7,7 @@ import { AiFillLike } from "react-icons/ai";
 
 
 function ListTypeA({ id, image, recipeName, title, description, creator, ingredients, timeDate }) {
-    const { isAdmin } = useIsAdmin()
+    const { isAdmin, isLoggedIn } = useIsAdmin()
     const [isFav, setIsFav] = useState(false);
     const navigate = useNavigate()
 
@@ -127,7 +127,12 @@ function ListTypeA({ id, image, recipeName, title, description, creator, ingredi
                             {recipeName.substr(0, 30)}...
                         </Heading>
                     </Box>
-                    <AiFillLike color={isFav ? 'red' : 'black'} width={"10%"} onClick={toggleFav} />
+                    {
+                        isLoggedIn ? (
+                            <AiFillLike color={isFav ? 'red' : 'black'} width={"10%"} onClick={toggleFav} />
+                        ) : (<></>)
+                    }
+
                 </Flex>
                 <Box p={6}>
                     <Text onClick={handleClicker} mb={4}>{description.substr(0, 100)}...</Text>

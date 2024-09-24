@@ -31,15 +31,15 @@ function ListTypeC({ id }) {
         navigate(`/recipe/${id}`)
     }
     return (
-        <Box maxW="md" m={4} onClick={handleClick} borderWidth={1} borderRadius={8} overflow="hidden">
+        <Box maxW="md" width={'90%'} height={'100%'} m={4} onClick={handleClick} borderWidth={1} borderRadius={8} overflow="hidden">
             <Flex height={'100%'}>
-                <Image width={100} height={'80%'} m={2} objectFit={'cover'} src={'https://github.com/AngelJumbo/gruvbox-wallpapers/blob/main/wallpapers/anime/wall.jpg?raw=true'} alt={'alt text here'} />
+                <Image width={100} m={2} objectFit={'cover'} src={'https://github.com/AngelJumbo/gruvbox-wallpapers/blob/main/wallpapers/anime/wall.jpg?raw=true'} alt={'alt text here'} />
                 <Box m={2}>
                     <Heading size="sm" mb={2}> {result.recipeName} </Heading>
-                    <Text size={'xs'} mb={4}>{result.description}...</Text>
+                    <Text size={'xs'} mb={4}>{result.description?.substr(0,70)}...</Text>
                     <Flex direction={'column'} justifyContent="space-between" >
                         <Badge colorScheme="green">{result.ingredients}</Badge>
-                        <Text color={'gray'} fontSize={'xs'}>'10' min</Text>
+                        <Text color={'gray'} fontSize={'xs'}>{result.postedAt}</Text>
                     </Flex>
                 </Box>
             </Flex>

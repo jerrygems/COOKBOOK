@@ -5,6 +5,7 @@ const IsAdminContext = createContext();
 
 export const IsAdminProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const checkRole = async () => {
@@ -12,7 +13,10 @@ export const IsAdminProvider = ({ children }) => {
         const token = localStorage.getItem('vulntoken');
         if (!token) {
           console.log('there is no token');
+          setIsLoggedIn(false)
           return;
+        } else {
+          setIsLoggedIn(true)
         }
 
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/check`, {
@@ -26,8 +30,10 @@ export const IsAdminProvider = ({ children }) => {
         if (response.ok) {
           const data = await response.json();
           setIsAdmin(data.message === 'admin');
+          setIsLoggedIn(true)
         } else {
           console.log('response not okay');
+
         }
       } catch (err) {
         console.log(err);
@@ -38,7 +44,7 @@ export const IsAdminProvider = ({ children }) => {
   }, []);
 
   return (
-    <IsAdminContext.Provider value={{ isAdmin }}>
+    <IsAdminContext.Provider value={{ isAdmin, isLoggedIn }}>
       {children}
     </IsAdminContext.Provider>
   );

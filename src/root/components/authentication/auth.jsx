@@ -9,14 +9,16 @@ import {
   Input,
   ModalFooter,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 
-function Auth({ isOpen, onClose, isSignUp }) {
+function Auth({ isOpen, onClose, onOpen, isSignUp }) {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()
   const [confPassword, setConfPassword] = useState('')
 
   const registerForm = async () => {
@@ -36,6 +38,7 @@ function Auth({ isOpen, onClose, isSignUp }) {
         const data = await response.json()
         console.log('registered', data)
         onClose()
+        window.location.reload()
       } else {
         console.log('registration failed')
       }
@@ -61,6 +64,7 @@ function Auth({ isOpen, onClose, isSignUp }) {
         const data = await response.json()
         console.log("logged in ig", data)
         localStorage.setItem('vulntoken', data.token)
+        window.location.reload()
       } else {
         console.log("response not okay")
       }

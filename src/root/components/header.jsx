@@ -12,18 +12,20 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Auth from './authentication/auth';
 import { useNavigate } from 'react-router-dom';
+import { useIsAdmin } from './authentication/is-admin-context';
 
 
 function Header() {
   const navigate = useNavigate()
+  const { isLoggedIn } = useIsAdmin()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleToggle = () => (isOpen ? onClose() : onOpen())
   const [isSignUp, setSignUp] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedStatus, setisLoggedStatus] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('vulntoken');
-    setIsLoggedIn(token)
+    setisLoggedStatus(token)
   }, [])
 
   const handleLoginClick = () => {
@@ -37,7 +39,9 @@ function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem('vulntoken')
-    setIsLoggedIn(false)
+    setisLoggedStatus(false)
+    navigate('/')
+    window.location.reload()
   };
   return (
     <>
@@ -70,14 +74,24 @@ function Header() {
         >
           <Text onClick={() => { navigate('/recipes') }}>Recipes</Text>
           <Text onClick={() => { navigate('/search') }}>Search</Text>
-          <Text onClick={() => { navigate('/favourites') }}>Favourite</Text>
+          {
+            isLoggedIn ? (
+              <>
+                <Text onClick={() => { navigate('/favourites') }}>Favourite</Text>
+                <Text onClick={() => { navigate('/created') }}>Created By You</Text>
+              </>
+            ) : (
+              <>
+              </>
+            )
+          }
         </Stack>
 
         <Box
           display={{ base: isOpen ? "block" : "none", md: "block" }}
           mt={{ base: 4, md: 0 }}
         >
-          {isLoggedIn ? (
+          {isLoggedStatus ? (
             <Button className='spacezoner'
               variant="outline"
               color="white.700"
@@ -110,7 +124,7 @@ function Header() {
       </Flex>
 
       {/* here the model for the login stuff  */}
-      <Auth isOpen={isOpen} onClose={onClose} isSignUp={isSignUp} />
+      <Auth isOpen={isOpen} onClose={onClose} onOpen={onOpen} isSignUp={isSignUp} />
 
     </>
   )

@@ -90,13 +90,11 @@ function CardTypeA({ tempId }) {
         <>
             <Card m={4} width={'98%'}>
                 <Flex>
-                    <Image width={'100%'} height={300} content='stretch' src={`${recipe.image}`} />
-
+                    <Image objectFit={'cover'} width={'100%'} height={400} src={`${recipe.image}`} />
                 </Flex>
                 <CardHeader>
                     <Heading size='md'>{recipe.recipeName}</Heading>
                 </CardHeader>
-
                 <CardBody>
                     <Stack divider={<StackDivider />} spacing='4'>
                         <Box>
@@ -125,7 +123,8 @@ function CardTypeA({ tempId }) {
                             </Text>
                         </Box>
                         <Box>
-                            <Button onClick={handleFav}><FaHeart m={2} /> Like</Button> {/*onClick={handleLike}*/}
+                            <Button onClick={handleFav}><FaHeart m={2} /> Like</Button>
+                            <Text fontSize={'small'} color={'gray'}>{recipe.postedAt}</Text>
                         </Box>
                     </Stack>
                 </CardBody>

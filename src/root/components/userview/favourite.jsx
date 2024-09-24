@@ -29,7 +29,7 @@ function Favourites() {
       <Box gap={4}>
         <Heading size={'lg'} m={4} >Favourites </Heading>
         <hr />
-        <Flex wrap={'wrap'} m={4}>
+        <Flex wrap={'wrap'} direction={'row'} alignItems={'center'} m={4}>
           {
 
             Array.isArray(results) && results.map((result, index) => {
